@@ -1,0 +1,2757 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Milovanov Zakhar — Портфолио проектов</title>
+  <meta name="description" content="Портфолио проектов Захара Милованова: путь от алгоритмов до асинхронных Telegram-ботов на Python.">
+  <meta property="og:title" content="Milovanov Zakhar — Портфолио проектов">
+  <meta property="og:description" content="Школьный путь в программировании: от алгоритмов до асинхронных Telegram-ботов на Python.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070709;
+      --bg-card: rgba(18, 18, 24, 0.75);
+      --bg-card-hover: rgba(26, 26, 36, 0.88);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.22);
+      --text-main: #FFFFFF;
+      --text-muted: #8E8E93;
+      --text-sub: #A1A1A6;
+      --accent-ivory: #F5EFE6;
+      --accent-ivory-hover: #FFFFFF;
+      --accent-dark: #0e0e12;
+      --glow-flower: rgba(255, 255, 255, 0.6);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-pill: 999px;
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: #070709;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      cursor: default;
+    }
+
+    /* Custom Cursor */
+    .custom-cursor-dot, .custom-cursor-ring {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease, transform 0.15s ease-out;
+    }
+    .custom-cursor-dot {
+      width: 6px;
+      height: 6px;
+      background: #ffffff;
+      box-shadow: 0 0 10px #ffffff, 0 0 20px rgba(255,255,255,0.8);
+    }
+    .custom-cursor-ring {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(1px);
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+    body.hovering .custom-cursor-ring {
+      width: 58px;
+      height: 58px;
+      border-color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Background 3D Canvas */
+    #flowerCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Stars Overlay */
+    .stars-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 50% 20%, rgba(30, 24, 54, 0.25) 0%, rgba(7, 7, 9, 0) 70%),
+                  radial-gradient(circle at 80% 80%, rgba(20, 30, 50, 0.2) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Page Container */
+    .page-wrap {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* Navigation Bar */
+    header.site-header {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 56px);
+      max-width: 1184px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(14, 14, 18, 0.65);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-pill);
+      z-index: 100;
+      transition: var(--transition);
+    }
+    header.site-header.scrolled {
+      background: rgba(10, 10, 14, 0.88);
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      top: 16px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+    }
+    .brand-logo .dot {
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #fff;
+      animation: pulseGlow 2.5s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.25s ease;
+      position: relative;
+    }
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 1px;
+      background: #ffffff;
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Sound FX Toggle Pill */
+    .sound-toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-pill);
+      padding: 8px 14px;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+    .sound-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .sound-toggle-btn.active {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .sound-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 13px;
+    }
+    .sound-bars span {
+      display: block;
+      width: 2.5px;
+      height: 4px;
+      background: currentColor;
+      border-radius: 1px;
+      transition: height 0.2s ease;
+    }
+    .sound-toggle-btn.active .sound-bars span:nth-child(1) {
+      animation: soundBarAnim 0.7s infinite alternate ease-in-out;
+    }
+    .sound-toggle-btn.active .sound-bars span:nth-child(2) {
+      animation: soundBarAnim 0.9s infinite alternate 0.2s ease-in-out;
+    }
+    .sound-toggle-btn.active .sound-bars span:nth-child(3) {
+      animation: soundBarAnim 0.6s infinite alternate 0.4s ease-in-out;
+    }
+    @keyframes soundBarAnim {
+      0% { height: 3px; }
+      100% { height: 13px; }
+    }
+
+    /* Language Switcher */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-pill);
+      padding: 3px;
+      position: relative;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .lang-btn.active {
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Contact Primary Pill Button */
+    .btn-contact-pill {
+      background: var(--accent-ivory);
+      color: #0b0b0f;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      transition: var(--transition);
+      box-shadow: 0 4px 14px rgba(245, 239, 230, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-contact-pill:hover {
+      background: var(--accent-ivory-hover);
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.35);
+    }
+
+    /* HERO SECTION */
+    section.hero-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 100px;
+      padding-bottom: 60px;
+      position: relative;
+    }
+
+    .hero-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+      letter-spacing: 0.03em;
+    }
+    .hero-badge-tag .sparkle {
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    /* 3D Puffy Pillowy Hero Title (Matching Video) */
+    .hero-title-wrap {
+      position: relative;
+      margin-bottom: 24px;
+      perspective: 1000px;
+    }
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 8.5vw, 7.8rem);
+      letter-spacing: -0.045em;
+      line-height: 0.95;
+      color: #FFFFFF;
+      text-transform: none;
+      position: relative;
+      display: inline-block;
+      user-select: none;
+      text-shadow:
+        0 1px 0 #ffffff,
+        0 2px 1px rgba(255, 255, 255, 0.7),
+        0 4px 3px rgba(0, 0, 0, 0.3),
+        0 8px 12px rgba(0, 0, 0, 0.7),
+        0 16px 28px rgba(0, 0, 0, 0.9),
+        0 0 50px rgba(255, 255, 255, 0.3);
+      filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8));
+      transition: transform 0.2s ease-out;
+    }
+
+    .hero-title-reflection {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      pointer-events: none;
+    }
+
+    .hero-subtitle {
+      max-width: 580px;
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 400;
+      margin: 0 auto 36px auto;
+      letter-spacing: -0.01em;
+    }
+
+    /* Hero Tech Pills */
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .hero-tag-item {
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-sub);
+      transition: var(--transition);
+    }
+    .hero-tag-item:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* Scroll Explorer Circle Button (Matching Video) */
+    .hero-scroll-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+    }
+    .hero-scroll-btn::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      right: -6px;
+      bottom: -6px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      animation: spinDashed 20s linear infinite;
+    }
+    @keyframes spinDashed {
+      100% { transform: rotate(360deg); }
+    }
+    .hero-scroll-btn:hover {
+      background: #ffffff;
+      color: #000000;
+      transform: scale(1.12);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+      border-color: #ffffff;
+    }
+    .hero-scroll-btn svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.3s ease;
+      animation: bounceArrow 2s infinite ease-in-out;
+    }
+    @keyframes bounceArrow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+
+    /* SECTION COMMON STYLES */
+    section.content-section {
+      padding: 120px 0 60px 0;
+      position: relative;
+    }
+
+    .section-header-wrap {
+      margin-bottom: 56px;
+    }
+    .section-title-3d {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: #FFFFFF;
+      text-shadow:
+        0 1px 0 #fff,
+        0 2px 1px rgba(255, 255, 255, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.7),
+        0 12px 24px rgba(0, 0, 0, 0.9);
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 580px;
+      line-height: 1.5;
+    }
+
+    /* ==============================================================
+       PROJECTS SECTION (Matching Frames 16 & 18)
+       ============================================================== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 992px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: var(--transition);
+      cursor: pointer;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+    .project-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 255, 255, 0.05);
+    }
+
+    /* 3D Visual Header with Fanning Cards */
+    .card-visual-stage {
+      width: 100%;
+      height: 200px;
+      background: radial-gradient(circle at 50% 50%, rgba(35, 35, 48, 0.5) 0%, rgba(12, 12, 16, 0.8) 100%);
+      border-radius: var(--radius-md);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .card-visual-stage .glow-spot {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.25;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .card-grade-7 .glow-spot { background: #5e60ce; }
+    .card-grade-8 .glow-spot { background: #48cae4; }
+    .card-grade-9 .glow-spot { background: #f72585; }
+    .project-card:hover .glow-spot {
+      opacity: 0.45;
+      transform: scale(1.3);
+    }
+
+    /* Fanned Cards Effect */
+    .fanned-deck {
+      position: relative;
+      width: 170px;
+      height: 120px;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fanned-card {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      background: #15151c;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: bottom center;
+    }
+
+    /* Left Card */
+    .fanned-card.c-left {
+      transform: rotate(-12deg) translateX(-18px) scale(0.92);
+      opacity: 0.75;
+      background: #121217;
+    }
+    /* Right Card */
+    .fanned-card.c-right {
+      transform: rotate(12deg) translateX(18px) scale(0.92);
+      opacity: 0.75;
+      background: #121217;
+    }
+    /* Center Card */
+    .fanned-card.c-center {
+      transform: rotate(0deg) translateY(-4px) scale(1);
+      z-index: 2;
+      background: #1a1a24;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Hover Fan-out Animation (Signature Video Effect) */
+    .project-card:hover .fanned-card.c-left {
+      transform: rotate(-24deg) translateX(-38px) translateY(-8px) scale(0.95);
+      opacity: 0.95;
+      box-shadow: -10px 15px 30px rgba(0, 0, 0, 0.8);
+    }
+    .project-card:hover .fanned-card.c-right {
+      transform: rotate(24deg) translateX(38px) translateY(-8px) scale(0.95);
+      opacity: 0.95;
+      box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.8);
+    }
+    .project-card:hover .fanned-card.c-center {
+      transform: rotate(0deg) translateY(-14px) scale(1.08);
+      border-color: rgba(255, 255, 255, 0.45);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Deck Internal Mockups */
+    .deck-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .deck-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .deck-icon-dots {
+      display: flex;
+      gap: 3px;
+    }
+    .deck-icon-dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .deck-content-preview {
+      font-family: monospace;
+      font-size: 0.65rem;
+      color: #abb2bf;
+      line-height: 1.3;
+      padding: 4px 0;
+      white-space: pre;
+      overflow: hidden;
+    }
+    .deck-footer-metric {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--accent-ivory);
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 4px;
+    }
+
+    /* Card Text Content */
+    .project-meta-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .project-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+      line-height: 1.25;
+      transition: color 0.3s ease;
+    }
+    .project-card:hover .project-card-title {
+      color: #FFFFFF;
+    }
+    .project-card-desc {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    /* Card Bottom Bar with Arrow Button */
+    .card-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .card-tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .card-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+
+    /* Circular Arrow Button (Matches Frame 16 & 18) */
+    .card-circle-arrow-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .card-circle-arrow-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+    }
+    .project-card:hover .card-circle-arrow-btn {
+      background: var(--accent-ivory);
+      color: #0b0b0f;
+      border-color: var(--accent-ivory);
+      transform: scale(1.08) rotate(45deg);
+      box-shadow: 0 4px 16px rgba(245, 239, 230, 0.4);
+    }
+
+    /* ==============================================================
+       SECTION: TECH STACK / ARSENAL (Matching Frames 22 & 24)
+       ============================================================== */
+    .stack-list-wrap {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .stack-row-item {
+      display: grid;
+      grid-template-columns: 240px 1fr 140px;
+      align-items: center;
+      padding: 24px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+    @media (max-width: 850px) {
+      .stack-row-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+    .stack-row-item:hover {
+      background: rgba(255, 255, 255, 0.03);
+      padding-left: 24px;
+      border-bottom-color: rgba(255, 255, 255, 0.2);
+    }
+    .stack-row-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .stack-idx {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .stack-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .stack-desc {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+    .stack-badge-right {
+      text-align: right;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .stack-row-item:hover .stack-badge-right {
+      color: var(--accent-ivory);
+    }
+
+    /* ==============================================================
+       SECTION: PROCESS / WORKFLOW (Matching Frames 28 & 30)
+       ============================================================== */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+    @media (max-width: 992px) {
+      .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .process-step-card {
+      position: relative;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      transition: var(--transition);
+    }
+    .process-step-card:hover {
+      border-top-color: #ffffff;
+      transform: translateY(-4px);
+    }
+    .process-step-card:hover .step-num {
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 3.2rem;
+      line-height: 1;
+      color: #ffffff;
+      margin-bottom: 16px;
+      letter-spacing: -0.04em;
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .step-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .step-sub-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    /* ==============================================================
+       CTA SECTION (Matching Frames 35 & 37)
+       ============================================================== */
+    section.cta-section {
+      text-align: center;
+      padding: 140px 0 100px 0;
+      position: relative;
+    }
+    .cta-title-3d {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3.2rem, 9vw, 6.8rem);
+      letter-spacing: -0.045em;
+      line-height: 0.95;
+      color: #FFFFFF;
+      text-shadow:
+        0 1px 0 #fff,
+        0 2px 1px rgba(255, 255, 255, 0.7),
+        0 4px 6px rgba(0, 0, 0, 0.4),
+        0 10px 20px rgba(0, 0, 0, 0.8),
+        0 20px 40px rgba(0, 0, 0, 0.9);
+      margin-bottom: 20px;
+      user-select: none;
+    }
+    .cta-desc {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 40px auto;
+      line-height: 1.5;
+    }
+    .cta-buttons-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+    .btn-cta-pill {
+      background: var(--accent-ivory);
+      color: #0c0c10;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid transparent;
+      box-shadow: 0 4px 20px rgba(245, 239, 230, 0.25);
+      cursor: pointer;
+    }
+    .btn-cta-pill:hover {
+      background: #ffffff;
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.4);
+    }
+    .btn-cta-pill.secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: none;
+    }
+    .btn-cta-pill.secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+    }
+
+    /* FOOTER */
+    footer.site-footer {
+      padding: 40px 0 60px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    @media (max-width: 650px) {
+      footer.site-footer {
+        flex-direction: column;
+        gap: 14px;
+        text-align: center;
+      }
+    }
+
+    /* ==============================================================
+       INTERACTIVE MODALS & SIMULATORS
+       ============================================================== */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(4, 4, 6, 0.85);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      padding: 20px;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-window {
+      width: 100%;
+      max-width: 820px;
+      max-height: 88vh;
+      background: #111117;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 255, 255, 0.05);
+      overflow-y: auto;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .modal-backdrop.open .modal-window {
+      transform: scale(1) translateY(0);
+    }
+    .modal-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      background: #111117;
+      z-index: 10;
+    }
+    .modal-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .modal-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--accent-ivory);
+    }
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .modal-close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .modal-close-btn:hover {
+      background: #fff;
+      color: #000;
+      transform: scale(1.1);
+    }
+    .modal-body-content {
+      padding: 28px;
+    }
+
+    /* Interactive Simulator Containers inside Modal */
+    .simulator-container {
+      background: #09090d;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .sim-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .sim-header .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #4ade80;
+    }
+    .sim-header .live-badge::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
+    }
+
+    /* Currency Converter Interactive Simulator */
+    .currency-sim-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .currency-sim-input {
+      background: #14141d;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      width: 140px;
+      outline: none;
+    }
+    .currency-sim-select {
+      background: #14141d;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+    .currency-calc-btn {
+      background: var(--accent-ivory);
+      color: #0a0a0e;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .currency-calc-btn:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.3);
+    }
+    .currency-sim-output {
+      background: #12121a;
+      border-radius: 10px;
+      padding: 16px;
+      border-left: 3px solid #38bdf8;
+      font-family: monospace;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+
+    /* Subscription Tracker Interactive Simulator */
+    .sub-item-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #14141e;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+    }
+    .sub-item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sub-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .sub-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #fff;
+    }
+    .sub-trial-badge {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      font-weight: 600;
+    }
+    .sub-price {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+    .sim-alert-banner {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: #fef3c7;
+    }
+
+    /* Interactive Code Runner Simulator */
+    .code-editor-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .code-tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 6px 14px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .code-tab-btn.active {
+      background: #ffffff;
+      color: #000;
+    }
+    .code-display-box {
+      background: #060608;
+      border-radius: 10px;
+      padding: 16px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.82rem;
+      color: #d1d5db;
+      line-height: 1.5;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .btn-run-code {
+      margin-top: 12px;
+      background: #22c55e;
+      color: #000;
+      font-weight: 700;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Toast Notification */
+    .toast-popup {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(40px);
+      background: #ffffff;
+      color: #000000;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.88rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10000;
+    }
+    .toast-popup.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Stars & Glow -->
+  <div class="stars-bg"></div>
+
+  <!-- 3D Flower Meadow Canvas (Video Effect) -->
+  <canvas id="flowerCanvas"></canvas>
+
+  <!-- Custom Cursor Elements -->
+  <div class="custom-cursor-dot" id="cursorDot"></div>
+  <div class="custom-cursor-ring" id="cursorRing"></div>
+
+  <!-- Toast Notification -->
+  <div class="toast-popup" id="toastBox">Email скопирован в буфер!</div>
+
+  <!-- Header Navigation -->
+  <header class="site-header" id="siteHeader">
+    <a href="#hero" class="brand-logo" id="brandLogo">
+      <span class="dot"></span>
+      <span>Milovanov Zakhar</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#projects" data-i18n="navProjects">Работы</a></li>
+      <li><a href="#stack" data-i18n="navStack">Стек</a></li>
+      <li><a href="#process" data-i18n="navProcess">Как работаю</a></li>
+      <li><a href="#contact" data-i18n="navContact">Связаться</a></li>
+    </ul>
+
+    <div class="header-controls">
+      <!-- Audio FX Toggle -->
+      <button class="sound-toggle-btn active" id="soundToggle" title="Звуковые эффекты">
+        <div class="sound-bars">
+          <span></span><span></span><span></span>
+        </div>
+        <span id="soundLabel">Звук</span>
+      </button>
+
+      <!-- Language Switcher -->
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btnLangRu">RU</button>
+        <button class="lang-btn" id="btnLangEn">EN</button>
+      </div>
+
+      <!-- Action Pill Button -->
+      <a href="#contact" class="btn-contact-pill" data-i18n="btnMessage">
+        Написать
+      </a>
+    </div>
+  </header>
+
+  <!-- Page Main Content Wrap -->
+  <div class="page-wrap">
+
+    <!-- ==========================================
+         HERO SECTION
+         ========================================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-badge-tag">
+        <span class="sparkle">✦</span>
+        <span data-i18n="heroBadge">Портфолио проектов & разработок</span>
+      </div>
+
+      <div class="hero-title-wrap">
+        <h1 class="hero-title" id="heroMainTitle">Milovanov Zakhar</h1>
+        <div class="hero-title-reflection" aria-hidden="true">Milovanov Zakhar</div>
+      </div>
+
+      <p class="hero-subtitle" data-i18n="heroSubtitle">
+        Визуал и код, созданные из глубокого интереса к технологиям.<br>
+        Вырастает из идеи, а не из шаблона.
+      </p>
+
+      <div class="hero-tags">
+        <span class="hero-tag-item">🐍 Python 3</span>
+        <span class="hero-tag-item">🤖 Telegram Bots</span>
+        <span class="hero-tag-item">⚡ AsyncIO & aiohttp</span>
+        <span class="hero-tag-item">📊 REST API</span>
+        <span class="hero-tag-item">⏰ Smart Automations</span>
+      </div>
+
+      <a href="#projects" class="hero-scroll-btn" id="heroScrollBtn" title="Смотреть работы">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <polyline points="19 12 12 19 5 12"></polyline>
+        </svg>
+      </a>
+    </section>
+
+    <!-- ==========================================
+         PROJECTS SECTION (Matching Frames 16 & 18)
+         ========================================== -->
+    <section class="content-section" id="projects">
+      <div class="section-header-wrap">
+        <h2 class="section-title-3d" data-i18n="projectsTitle">мои работы</h2>
+        <p class="section-desc" data-i18n="projectsDesc">
+          Школьный путь в программировании: от изучения базовых языков до создания умных асинхронных чат-ботов на Python.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- CARD 1: 7 КЛАСС -->
+        <div class="project-card card-grade-7" onclick="openProjectModal('grade7')">
+          <div class="card-visual-stage">
+            <div class="glow-spot"></div>
+            <div class="fanned-deck">
+              <!-- Left Deck Screen -->
+              <div class="fanned-card c-left">
+                <div class="deck-header-row">
+                  <span class="deck-badge">C++</span>
+                  <div class="deck-icon-dots"><span></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">int main() {
+  std::cout <<
+  "Algo 7" << std::endl;
+}</div>
+                <div class="deck-footer-metric">
+                  <span>Logic</span>
+                  <span>O(log n)</span>
+                </div>
+              </div>
+              <!-- Right Deck Screen -->
+              <div class="fanned-card c-right">
+                <div class="deck-header-row">
+                  <span class="deck-badge">WEB</span>
+                  <div class="deck-icon-dots"><span></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">&lt;div class="code"&gt;
+  &lt;p&gt;Structure&lt;/p&gt;
+&lt;/div&gt;</div>
+                <div class="deck-footer-metric">
+                  <span>DOM</span>
+                  <span>UI/UX</span>
+                </div>
+              </div>
+              <!-- Center Deck Screen -->
+              <div class="fanned-card c-center">
+                <div class="deck-header-row">
+                  <span class="deck-badge" style="background: #2563eb;">PYTHON</span>
+                  <div class="deck-icon-dots"><span style="background: #60a5fa;"></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">def solve_problem(n):
+    return [i**2 for i
+            in range(n)]</div>
+                <div class="deck-footer-metric">
+                  <span>Syntax</span>
+                  <span style="color:#60a5fa;">Mastered</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-meta-badge" data-i18n="card1Badge">7 класс · 1 этап</div>
+          <h3 class="project-card-title" data-i18n="card1Title">Языки программирования</h3>
+          <p class="project-card-desc" data-i18n="card1Desc">
+            Освоение фундаментальной логики, структур данных, синтаксиса популярных языков и олимпиадных алгоритмов для решения практических задач.
+          </p>
+
+          <div class="card-bottom-bar">
+            <div class="card-tags-list">
+              <span class="card-tag">Python</span>
+              <span class="card-tag">C++</span>
+              <span class="card-tag">Алгоритмы</span>
+            </div>
+            <div class="card-circle-arrow-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: 8 КЛАСС -->
+        <div class="project-card card-grade-8" onclick="openProjectModal('grade8')">
+          <div class="card-visual-stage">
+            <div class="glow-spot"></div>
+            <div class="fanned-deck">
+              <!-- Left Deck Screen -->
+              <div class="fanned-card c-left">
+                <div class="deck-header-row">
+                  <span class="deck-badge">API</span>
+                  <div class="deck-icon-dots"><span></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">GET /rates/live
+{ "USD": 93.5,
+  "EUR": 101.2 }</div>
+                <div class="deck-footer-metric">
+                  <span>Latency</span>
+                  <span style="color:#4ade80;">42ms</span>
+                </div>
+              </div>
+              <!-- Right Deck Screen -->
+              <div class="fanned-card c-right">
+                <div class="deck-header-row">
+                  <span class="deck-badge">CACHE</span>
+                  <div class="deck-icon-dots"><span></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">cache.set(
+  "USD_RUB", 93.5,
+  ttl=900)</div>
+                <div class="deck-footer-metric">
+                  <span>TTL</span>
+                  <span>15 min</span>
+                </div>
+              </div>
+              <!-- Center Deck Screen -->
+              <div class="fanned-card c-center">
+                <div class="deck-header-row">
+                  <span class="deck-badge" style="background:#0284c7;">TG BOT</span>
+                  <div class="deck-icon-dots"><span style="background:#38bdf8;"></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">💱 Конвертер Валют
+100 USD = 9,350 ₽
+[USD] [EUR] [CNY]</div>
+                <div class="deck-footer-metric">
+                  <span>Online</span>
+                  <span style="color:#38bdf8;">Production</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-meta-badge" data-i18n="card2Badge">8 класс · Завершённый проект</div>
+          <h3 class="project-card-title" data-i18n="card2Title">Конвертер валют на Python</h3>
+          <p class="project-card-desc" data-i18n="card2Desc">
+            Разработка полноценного Telegram-бота для мгновенной конвертации мировых валют с внешними финансовыми API, кэшированием и асинхронностью.
+          </p>
+
+          <div class="card-bottom-bar">
+            <div class="card-tags-list">
+              <span class="card-tag">Python</span>
+              <span class="card-tag">Telegram Bot</span>
+              <span class="card-tag">REST API</span>
+            </div>
+            <div class="card-circle-arrow-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: 9 КЛАСС -->
+        <div class="project-card card-grade-9" onclick="openProjectModal('grade9')">
+          <div class="card-visual-stage">
+            <div class="glow-spot"></div>
+            <div class="fanned-deck">
+              <!-- Left Deck Screen -->
+              <div class="fanned-card c-left">
+                <div class="deck-header-row">
+                  <span class="deck-badge">SUBS</span>
+                  <div class="deck-icon-dots"><span></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">🎬 Netflix: 12.99$
+🎵 Spotify: 169₽
+🤖 ChatGPT: 20$</div>
+                <div class="deck-footer-metric">
+                  <span>Total</span>
+                  <span>~3,540 ₽</span>
+                </div>
+              </div>
+              <!-- Right Deck Screen -->
+              <div class="fanned-card c-right">
+                <div class="deck-header-row">
+                  <span class="deck-badge">CRON</span>
+                  <div class="deck-icon-dots"><span></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">scheduler.add_job(
+  check_trials,
+  'interval', h=1)</div>
+                <div class="deck-footer-metric">
+                  <span>APScheduler</span>
+                  <span style="color:#f43f5e;">Active</span>
+                </div>
+              </div>
+              <!-- Center Deck Screen -->
+              <div class="fanned-card c-center">
+                <div class="deck-header-row">
+                  <span class="deck-badge" style="background:#e11d48;">⚠️ ALERT</span>
+                  <div class="deck-icon-dots"><span style="background:#fb7185;"></span><span></span></div>
+                </div>
+                <div class="deck-content-preview">Триал заканчивается
+через 24 часа!
+Списание: 20.00 $</div>
+                <div class="deck-footer-metric">
+                  <span>Status</span>
+                  <span style="color:#fb7185;">In Dev</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-meta-badge" data-i18n="card3Badge">9 класс · Будущий флагман</div>
+          <h3 class="project-card-title" data-i18n="card3Title">Контроль подписок и триалов</h3>
+          <p class="project-card-desc" data-i18n="card3Desc">
+            Разработка чат-бота для контроля регулярных подписок и пробных периодов (триалов). Защищает от нежелательных автосписаний с push-уведомлениями.
+          </p>
+
+          <div class="card-bottom-bar">
+            <div class="card-tags-list">
+              <span class="card-tag">Python 3</span>
+              <span class="card-tag">Aiogram</span>
+              <span class="card-tag">Smart Alerts</span>
+            </div>
+            <div class="card-circle-arrow-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         STACK & SKILLS SECTION (Matching Frames 22 & 24)
+         ========================================== -->
+    <section class="content-section" id="stack">
+      <div class="section-header-wrap">
+        <h2 class="section-title-3d" data-i18n="stackTitle">стек технологий</h2>
+        <p class="section-desc" data-i18n="stackDesc">
+          Инструменты и технологии, которые я использую для проектирования и запуска ботов.
+        </p>
+      </div>
+
+      <div class="stack-list-wrap">
+        <!-- Row 1 -->
+        <div class="stack-row-item">
+          <div class="stack-row-left">
+            <span class="stack-idx">01</span>
+            <span class="stack-name">Python 3</span>
+          </div>
+          <div class="stack-desc" data-i18n="stack1Desc">
+            Глубокое понимание ООП, декораторов, генераторов, typing и асинхронного программирования (AsyncIO) для высоконагруженных задач.
+          </div>
+          <div class="stack-badge-right" data-i18n="stack1Badge">Основной язык →</div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="stack-row-item">
+          <div class="stack-row-left">
+            <span class="stack-idx">02</span>
+            <span class="stack-name">Telegram Bot API</span>
+          </div>
+          <div class="stack-desc" data-i18n="stack2Desc">
+            Библиотека Aiogram 3.x, создание интерактивных инлайн-клавиатур, FSM (Finite State Machine) сценариев и вебхуков.
+          </div>
+          <div class="stack-badge-right" data-i18n="stack2Badge">Production →</div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="stack-row-item">
+          <div class="stack-row-left">
+            <span class="stack-idx">03</span>
+            <span class="stack-name">REST API & JSON</span>
+          </div>
+          <div class="stack-desc" data-i18n="stack3Desc">
+            Асинхронные HTTP-клиенты через aiohttp, интеграция с внешними финансовыми биржами, парсинг JSON и кэширование ответов.
+          </div>
+          <div class="stack-badge-right" data-i18n="stack3Badge">Интеграции →</div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="stack-row-item">
+          <div class="stack-row-left">
+            <span class="stack-idx">04</span>
+            <span class="stack-name">Базы данных & Хранение</span>
+          </div>
+          <div class="stack-desc" data-i18n="stack4Desc">
+            SQLite, работа с реляционными моделями данных, учет пользователей, хранение дат списания подписок и кэш курсов.
+          </div>
+          <div class="stack-badge-right" data-i18n="stack4Badge">Хранилище →</div>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="stack-row-item">
+          <div class="stack-row-left">
+            <span class="stack-idx">05</span>
+            <span class="stack-name">Git & Инфраструктура</span>
+          </div>
+          <div class="stack-desc" data-i18n="stack5Desc">
+            Контроль версий Git, репозитории GitHub, виртуальные окружения venv, запуск и фоновый мониторинг на серверах.
+          </div>
+          <div class="stack-badge-right" data-i18n="stack5Badge">DevOps →</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         PROCESS SECTION (Matching Frames 28 & 30)
+         ========================================== -->
+    <section class="content-section" id="process">
+      <div class="section-header-wrap">
+        <h2 class="section-title-3d" data-i18n="processTitle">как я работаю</h2>
+        <p class="section-desc" data-i18n="processDesc">
+          Четкая последовательность шагов от формирования гипотезы до работающего чат-бота в Telegram.
+        </p>
+      </div>
+
+      <div class="process-grid">
+        <div class="process-step-card">
+          <div class="step-num">01</div>
+          <h4 class="step-title" data-i18n="step1Title">Идея и сценарий</h4>
+          <p class="step-desc" data-i18n="step1Desc">
+            Определение реальной проблемы пользователя, проектирование диалогового древа и сценариев взаимодействия.
+          </p>
+        </div>
+
+        <div class="process-step-card">
+          <div class="step-num">02</div>
+          <h4 class="step-title" data-i18n="step2Title">Архитектура бота</h4>
+          <p class="step-desc" data-i18n="step2Desc">
+            Выбор библиотек, проектирование FSM-состояний, подключение API внешних поставщиков данных и схемы базы.
+          </p>
+        </div>
+
+        <div class="process-step-card">
+          <div class="step-num">03</div>
+          <h4 class="step-title" data-i18n="step3Title">Кодинг и асинхронность</h4>
+          <p class="step-desc" data-i18n="step3Desc">
+            Написание чистого, типизированного кода на Python с использованием AsyncIO для обеспечения высокой скорости отклика.
+          </p>
+        </div>
+
+        <div class="process-step-card">
+          <div class="step-num">04</div>
+          <h4 class="step-title" data-i18n="step4Title">Тестирование и запуск</h4>
+          <p class="step-desc" data-i18n="step4Desc">
+            Проверка граничных условий, обработка сбоев API, деплой на виртуальный сервер и бесперебойная работа 24/7.
+          </p>
+        </div>
+      </div>
+
+      <div class="step-sub-badges">
+        <span>✦ Чистый асинхронный код</span>
+        <span>✦ Устойчивость к сбоям API</span>
+        <span>✦ Быстрый отклик бота</span>
+        <span>✦ Продуманный UX</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         CTA SECTION (Matching Frames 35 & 37)
+         ========================================== -->
+    <section class="cta-section" id="contact">
+      <h2 class="cta-title-3d" data-i18n="ctaTitle">есть проект?</h2>
+      <p class="cta-desc" data-i18n="ctaDesc">
+        Напиши мне в Telegram или отправь письмо — открыт к обсуждению идей ботов, автоматизации и совместных проектов.
+      </p>
+
+      <div class="cta-buttons-row">
+        <a href="https://t.me/StackOverflower_NaN" target="_blank" class="btn-cta-pill" data-i18n="ctaTelegram">
+          Написать в Telegram ↗
+        </a>
+        <a href="https://github.com/zakharm95" target="_blank" class="btn-cta-pill secondary" data-i18n="ctaGithub">
+          GitHub профиль ↗
+        </a>
+        <button class="btn-cta-pill secondary" onclick="copyEmailToClipboard()" data-i18n="ctaEmail">
+          Скопировать Email ✉
+        </button>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div>Milovanov Zakhar · 2026</div>
+      <div data-i18n="footerText">Создано с вниманием к качеству, звуку и анимации</div>
+    </footer>
+
+  </div>
+
+  <!-- ==========================================
+       MODAL DIALOG (Interactive Deep Dive)
+       ========================================== -->
+  <div class="modal-backdrop" id="projectModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-window">
+      <div class="modal-header-bar">
+        <div class="modal-title-wrap">
+          <span class="modal-badge" id="modalBadge">7 Класс</span>
+          <h3 class="modal-title" id="modalTitle">Языки программирования</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeProjectModal()" title="Закрыть">✕</button>
+      </div>
+
+      <div class="modal-body-content" id="modalContent">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       JAVASCRIPT: 3D CANVAS, AUDIO SYNTH, I18N
+       ========================================== -->
+  <script>
+    /* ==============================================================
+       1. WEB AUDIO API SYNTHESIZER ENGINE (Hypnotic, Organic Sound FX)
+       ============================================================== */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+        this.ambientGain = null;
+        this.ambientOscs = [];
+        this.isAmbientPlaying = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      // 1. Hover Ping: delicate, airy crystal chime
+      playHover() {
+        if (!this.enabled) return;
+        this.init();
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'sine';
+          // Sweep from 880Hz up to 1320Hz for a crisp crystal feel
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.exponentialRampToValueAtTime(1320, now + 0.08);
+
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } catch(e) {}
+      }
+
+      // 2. Card Hover Chime: warm dual sine chord
+      playCardHover() {
+        if (!this.enabled) return;
+        this.init();
+        try {
+          const now = this.ctx.currentTime;
+          const freqs = [523.25, 659.25]; // C5 and E5
+          freqs.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.03);
+
+            gain.gain.setValueAtTime(0.035, now + idx * 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(now + idx * 0.03);
+            osc.stop(now + 0.25);
+          });
+        } catch(e) {}
+      }
+
+      // 3. Tactile Click: satisfying Apple-like haptic tick
+      playClick() {
+        if (!this.enabled) return;
+        this.init();
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.exponentialRampToValueAtTime(38, now + 0.07);
+
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.07);
+        } catch(e) {}
+      }
+
+      // 4. Stardust Flower Burst: enchanted fairy sparkle arpeggio
+      playBurst() {
+        if (!this.enabled) return;
+        this.init();
+        try {
+          const now = this.ctx.currentTime;
+          const chord = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C major pentatonic
+          chord.forEach((freq, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + i * 0.04);
+
+            gain.gain.setValueAtTime(0.045, now + i * 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.04 + 0.25);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(now + i * 0.04);
+            osc.stop(now + i * 0.04 + 0.26);
+          });
+        } catch(e) {}
+      }
+
+      // 5. Language Switch Chime: rapid two-tone chime
+      playLangSwitch() {
+        if (!this.enabled) return;
+        this.init();
+        try {
+          const now = this.ctx.currentTime;
+          const freqs = [659.25, 987.77];
+          freqs.forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f, now + i * 0.06);
+            gain.gain.setValueAtTime(0.05, now + i * 0.06);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.06 + 0.18);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + i * 0.06);
+            osc.stop(now + i * 0.06 + 0.19);
+          });
+        } catch(e) {}
+      }
+
+      // 6. Generative Ambient Pad Drone (Subtle cosmic warmth)
+      toggleAmbient() {
+        this.init();
+        if (this.isAmbientPlaying) {
+          if (this.ambientGain) {
+            this.ambientGain.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.4);
+          }
+          this.isAmbientPlaying = false;
+          return false;
+        } else {
+          const now = this.ctx.currentTime;
+          this.ambientGain = this.ctx.createGain();
+          this.ambientGain.gain.setValueAtTime(0.0001, now);
+          this.ambientGain.gain.setTargetAtTime(0.035, now, 1.2);
+
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(650, now);
+
+          // Warm harmonic frequencies (Fmaj9 voicing)
+          const notes = [174.61, 261.63, 329.63, 392.00];
+          this.ambientOscs = notes.map((f, i) => {
+            const osc = this.ctx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f + (i * 0.4), now); // Detune
+            osc.connect(filter);
+            osc.start(now);
+            return osc;
+          });
+
+          filter.connect(this.ambientGain);
+          this.ambientGain.connect(this.ctx.destination);
+          this.isAmbientPlaying = true;
+          return true;
+        }
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    // Sound toggle button UI handling
+    const soundToggle = document.getElementById('soundToggle');
+    const soundLabel = document.getElementById('soundLabel');
+
+    soundToggle.addEventListener('click', () => {
+      sound.enabled = !sound.enabled;
+      if (sound.enabled) {
+        soundToggle.classList.add('active');
+        soundLabel.textContent = currentLang === 'ru' ? 'Звук: Вкл' : 'Sound: On';
+        sound.playBurst();
+      } else {
+        soundToggle.classList.remove('active');
+        soundLabel.textContent = currentLang === 'ru' ? 'Звук: Выкл' : 'Sound: Off';
+      }
+    });
+
+    // Attach hover & click sound to interactive elements
+    function bindSoundFX() {
+      const hoverables = document.querySelectorAll('a, button, .project-card, .stack-row-item, .process-step-card, .hero-tag-item');
+      hoverables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          if (el.classList.contains('project-card')) {
+            sound.playCardHover();
+          } else {
+            sound.playHover();
+          }
+        });
+        el.addEventListener('click', () => {
+          sound.playClick();
+        });
+      });
+    }
+
+    /* ==============================================================
+       2. 3D FLOWER PARTICLE ENGINE (Signature Canvas from Video)
+       ============================================================== */
+    const canvas = document.getElementById('flowerCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = 0, height = 0;
+    let dpr = 1;
+    let mouse = { x: -9999, y: -9999, px: -9999, py: -9999, speed: 0 };
+    let scrollY = 0;
+    let targetScrollY = 0;
+
+    function resizeCanvas() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Pre-render discrete 5-petal flower sprites for ultra-high FPS (120 FPS capable)
+    const flowerSprites = [];
+    const spriteSizes = [12, 18, 26, 36, 50, 72];
+    const spriteTints = [
+      'rgba(255, 255, 255, 0.95)',
+      'rgba(250, 245, 238, 0.92)',
+      'rgba(235, 242, 255, 0.90)'
+    ];
+
+    spriteSizes.forEach(s => {
+      spriteTints.forEach(tint => {
+        const offCanvas = document.createElement('canvas');
+        const pad = 12;
+        offCanvas.width = (s + pad) * 2;
+        offCanvas.height = (s + pad) * 2;
+        const octx = offCanvas.getContext('2d');
+        const cx = offCanvas.width / 2;
+        const cy = offCanvas.height / 2;
+
+        // Draw 5 petals
+        for (let i = 0; i < 5; i++) {
+          octx.save();
+          octx.translate(cx, cy);
+          octx.rotate((i * Math.PI * 2) / 5);
+          octx.beginPath();
+          octx.ellipse(0, s * 0.52, s * 0.32, s * 0.52, 0, 0, Math.PI * 2);
+          octx.fillStyle = tint;
+          octx.fill();
+
+          // Subtle petal vein highlight
+          octx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+          octx.lineWidth = 1;
+          octx.stroke();
+          octx.restore();
+        }
+
+        // Flower golden/warm center core
+        octx.beginPath();
+        octx.arc(cx, cy, s * 0.2, 0, Math.PI * 2);
+        octx.fillStyle = '#fff4db';
+        octx.fill();
+
+        flowerSprites.push({ canvas: offCanvas, size: s, radius: (s + pad) });
+      });
+    });
+
+    // 3D Flowers Array
+    const FLOWER_COUNT = 900;
+    const flowers = [];
+
+    // Loose floating petals that swirl up into the sky on mouse movement
+    const floatingPetals = [];
+
+    for (let i = 0; i < FLOWER_COUNT; i++) {
+      // Spread across a wide terrain plane
+      const u = Math.random();
+      const v = Math.random();
+      const angle = u * Math.PI * 2;
+      const dist = Math.sqrt(v);
+
+      const x = (Math.random() - 0.5) * 2800;
+      const z = 80 + Math.random() * 2400; // Z distance from camera
+
+      // Natural undulating hill/valley terrain equation
+      const baseY = 240 + Math.sin(x * 0.002) * 80 + Math.cos(z * 0.0018) * 60;
+
+      flowers.push({
+        x: x,
+        baseX: x,
+        y: baseY,
+        baseY: baseY,
+        z: z,
+        baseZ: z,
+        vx: 0,
+        vy: 0,
+        vz: 0,
+        rot: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.02,
+        spriteIdx: Math.floor(Math.random() * flowerSprites.length),
+        scale: 0.6 + Math.random() * 0.6,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    // Spawn floating petals when stirring the meadow
+    function spawnFloatingPetal(x, y, z) {
+      if (floatingPetals.length > 120) return;
+      floatingPetals.push({
+        x: x + (Math.random() - 0.5) * 40,
+        y: y - 20,
+        z: z,
+        vx: (Math.random() - 0.5) * 4,
+        vy: -2 - Math.random() * 4,
+        vz: (Math.random() - 0.5) * 2,
+        rot: Math.random() * Math.PI * 2,
+        rotV: (Math.random() - 0.5) * 0.1,
+        life: 1.0,
+        decay: 0.008 + Math.random() * 0.012,
+        size: 8 + Math.random() * 8
+      });
+    }
+
+    // Shockwave explosion on explore click
+    function triggerFlowerExplosion() {
+      sound.playBurst();
+      flowers.forEach(f => {
+        const dx = f.x;
+        const dz = f.z - 400;
+        const d = Math.sqrt(dx * dx + dz * dz) || 1;
+        f.vy -= (600 / (d + 200)) * (15 + Math.random() * 20);
+        f.vx += (dx / d) * (10 + Math.random() * 15);
+        f.rotSpeed = (Math.random() - 0.5) * 0.15;
+
+        if (Math.random() < 0.25) {
+          spawnFloatingPetal(f.x, f.y, f.z);
+        }
+      });
+    }
+
+    document.getElementById('heroScrollBtn').addEventListener('click', (e) => {
+      triggerFlowerExplosion();
+    });
+
+    // Track mouse & calculate speed
+    window.addEventListener('mousemove', (e) => {
+      mouse.px = mouse.x;
+      mouse.py = mouse.y;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+
+      const dx = mouse.x - mouse.px;
+      const dy = mouse.y - mouse.py;
+      mouse.speed = Math.sqrt(dx * dx + dy * dy);
+
+      // Fast mouse movement produces swirling floating petals
+      if (mouse.speed > 15 && Math.random() < 0.3) {
+        // Unproject 2D mouse coordinates approximately to 3D terrain
+        const mx3d = (mouse.x - width / 2) * 1.5;
+        const my3d = 200;
+        const mz3d = 400;
+        spawnFloatingPetal(mx3d, my3d, mz3d);
+      }
+    });
+
+    window.addEventListener('scroll', () => {
+      targetScrollY = window.scrollY;
+    });
+
+    // Main 3D Animation Render Loop
+    let time = 0;
+    function render3D() {
+      time += 0.015;
+      scrollY += (targetScrollY - scrollY) * 0.08;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Camera parameters
+      const fov = 420;
+      const cx = width / 2;
+      // As user scrolls, camera swoops down through the meadow
+      const cy = height * 0.55 - (scrollY * 0.25);
+      const camZ = -scrollY * 0.6;
+      const camY = -scrollY * 0.2;
+
+      // 1. Update and project flowers
+      // Sort flowers back-to-front for proper 3D alpha layering
+      flowers.sort((a, b) => b.z - a.z);
+
+      for (let i = 0; i < flowers.length; i++) {
+        const f = flowers[i];
+
+        // Wave undulation
+        f.y = f.baseY + Math.sin(time * 1.2 + f.phase) * 14;
+
+        // Mouse interaction in 2D projected space
+        const relZ = f.z - camZ;
+        if (relZ <= 20) continue;
+
+        const projScale = fov / relZ;
+        const screenX = cx + (f.x) * projScale;
+        const screenY = cy + (f.y - camY) * projScale;
+
+        // Check distance to mouse
+        const distToMouse = Math.hypot(screenX - mouse.x, screenY - mouse.y);
+        const repelRadius = 140;
+
+        if (distToMouse < repelRadius) {
+          const force = (1 - distToMouse / repelRadius) * 45;
+          const angle = Math.atan2(screenY - mouse.y, screenX - mouse.x);
+          f.vx += Math.cos(angle) * force * 0.08;
+          f.vy += Math.sin(angle) * force * 0.08 - force * 0.05; // lift slightly
+          f.rot += 0.04;
+        }
+
+        // Apply velocities & springs back to base position
+        f.x += f.vx;
+        f.y += f.vy;
+        f.vx *= 0.88;
+        f.vy *= 0.88;
+        f.x += (f.baseX - f.x) * 0.05;
+        f.y += (f.baseY - f.y) * 0.05;
+
+        f.rot += f.rotSpeed;
+
+        // Render flower sprite
+        const sprite = flowerSprites[f.spriteIdx];
+        const drawSize = sprite.size * f.scale * projScale * 2.5;
+
+        if (drawSize < 1 || screenX < -100 || screenX > width + 100 || screenY < -100 || screenY > height + 100) {
+          continue;
+        }
+
+        // Distance alpha fading (depth atmospheric fog)
+        const alpha = Math.min(1, Math.max(0, (2600 - relZ) / 2200)) * 0.95;
+
+        ctx.save();
+        ctx.translate(screenX, screenY);
+        ctx.rotate(f.rot);
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(
+          sprite.canvas,
+          -drawSize / 2,
+          -drawSize / 2,
+          drawSize,
+          drawSize
+        );
+        ctx.restore();
+      }
+
+
+      // 2. Render swirling floating petals
+      for (let j = floatingPetals.length - 1; j >= 0; j--) {
+        const p = floatingPetals[j];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.z += p.vz;
+        p.vy += 0.08; // gravity
+        p.rot += p.rotV;
+        p.life -= p.decay;
+
+        if (p.life <= 0) {
+          floatingPetals.splice(j, 1);
+          continue;
+        }
+
+        const pScale = fov / (p.z - camZ + 100);
+        const px = cx + p.x * pScale;
+        const py = cy + (p.y - camY) * pScale;
+        const pSize = p.size * pScale;
+
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(p.rot);
+        ctx.globalAlpha = p.life * 0.9;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, pSize * 0.5, pSize, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      requestAnimationFrame(render3D);
+    }
+    render3D();
+
+    /* ==============================================================
+       3. CUSTOM SMOOTH CURSOR (Follower dot + ring)
+       ============================================================== */
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    let curX = -100, curY = -100;
+    let ringX = -100, ringY = -100;
+
+    window.addEventListener('mousemove', (e) => {
+      curX = e.clientX;
+      curY = e.clientY;
+      cursorDot.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
+    });
+
+    function updateCursorRing() {
+      ringX += (curX - ringX) * 0.18;
+      ringY += (curY - ringY) * 0.18;
+      cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+      requestAnimationFrame(updateCursorRing);
+    }
+    updateCursorRing();
+
+    // Hover state for cursor ring expansion
+    document.querySelectorAll('a, button, .project-card, .stack-row-item').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+
+    /* ==============================================================
+       4. BILINGUAL SYSTEM (RU / EN)
+       ============================================================== */
+    let currentLang = 'ru';
+
+    const translations = {
+      ru: {
+        navProjects: "Работы",
+        navStack: "Стек",
+        navProcess: "Как работаю",
+        navContact: "Связаться",
+        btnMessage: "Написать",
+        heroBadge: "Портфолио проектов & разработок",
+        heroSubtitle: "Визуал и код, созданные из глубокого интереса к технологиям.<br>Вырастает из идеи, а не из шаблона.",
+        projectsTitle: "мои работы",
+        projectsDesc: "Школьный путь в программировании: от изучения базовых языков до создания умных асинхронных чат-ботов на Python.",
+        card1Badge: "7 класс · 1 этап",
+        card1Title: "Языки программирования",
+        card1Desc: "Освоение фундаментальной логики, структур данных, синтаксиса популярных языков и олимпиадных алгоритмов для решения практических задач.",
+        card2Badge: "8 класс · Завершённый проект",
+        card2Title: "Конвертер валют на Python",
+        card2Desc: "Разработка полноценного Telegram-бота для мгновенной конвертации мировых валют с внешними финансовыми API, кэшированием и асинхронностью.",
+        card3Badge: "9 класс · Будущий флагман",
+        card3Title: "Контроль подписок и триалов",
+        card3Desc: "Разработка чат-бота для контроля регулярных подписок и пробных периодов (триалов). Защищает от нежелательных автосписаний с push-уведомлениями.",
+        stackTitle: "стек технологий",
+        stackDesc: "Инструменты и технологии, которые я использую для проектирования и запуска ботов.",
+        stack1Desc: "Глубокое понимание ООП, декораторов, генераторов, typing и асинхронного программирования (AsyncIO) для высоконагруженных задач.",
+        stack1Badge: "Основной язык →",
+        stack2Desc: "Библиотека Aiogram 3.x, создание интерактивных инлайн-клавиатур, FSM (Finite State Machine) сценариев и вебхуков.",
+        stack2Badge: "Production →",
+        stack3Desc: "Асинхронные HTTP-клиенты через aiohttp, интеграция с внешними финансовыми биржами, парсинг JSON и кэширование ответов.",
+        stack3Badge: "Интеграции →",
+        stack4Desc: "SQLite, работа с реляционными моделями данных, учет пользователей, хранение дат списания подписок и кэш курсов.",
+        stack4Badge: "Хранилище →",
+        stack5Desc: "Контроль версий Git, репозитории GitHub, виртуальные окружения venv, запуск и фоновый мониторинг на серверах.",
+        stack5Badge: "DevOps →",
+        processTitle: "как я работаю",
+        processDesc: "Четкая последовательность шагов от формирования гипотезы до работающего чат-бота в Telegram.",
+        step1Title: "Идея и сценарий",
+        step1Desc: "Определение реальной проблемы пользователя, проектирование диалогового древа и сценариев взаимодействия.",
+        step2Title: "Архитектура бота",
+        step2Desc: "Выбор библиотек, проектирование FSM-состояний, подключение API внешних поставщиков данных и схемы базы.",
+        step3Title: "Кодинг и асинхронность",
+        step3Desc: "Написание чистого, типизированного кода на Python с использованием AsyncIO для обеспечения высокой скорости отклика.",
+        step4Title: "Тестирование и запуск",
+        step4Desc: "Проверка граничных условий, обработка сбоев API, деплой на виртуальный сервер и бесперебойная работа 24/7.",
+        ctaTitle: "есть проект?",
+        ctaDesc: "Напиши мне в Telegram или отправь письмо — открыт к обсуждению идей ботов, автоматизации и совместных проектов.",
+        ctaTelegram: "Написать в Telegram ↗",
+        ctaGithub: "GitHub профиль ↗",
+        ctaEmail: "Скопировать Email ✉",
+        footerText: "Создано с вниманием к качеству, звуку и анимации",
+        toastEmail: "Email скопирован в буфер обмена!"
+      },
+      en: {
+        navProjects: "Works",
+        navStack: "Stack",
+        navProcess: "How I Work",
+        navContact: "Contact",
+        btnMessage: "Get in touch",
+        heroBadge: "Portfolio & Engineering Journey",
+        heroSubtitle: "Visuals and code crafted with genuine passion for technology.<br>Grows from an authentic idea, not from a template.",
+        projectsTitle: "my works",
+        projectsDesc: "My academic software engineering journey: from foundational algorithms to intelligent asynchronous Python bots.",
+        card1Badge: "Grade 7 · Foundation",
+        card1Title: "Programming Languages",
+        card1Desc: "Mastering fundamental computer science logic, algorithms, data structures, and multi-language syntax for solving computational problems.",
+        card2Badge: "Grade 8 · Completed Project",
+        card2Title: "Currency Converter in Python",
+        card2Desc: "Development of a full-fledged Telegram bot for real-time global currency & crypto conversions with live APIs, caching and AsyncIO.",
+        card3Badge: "Grade 9 · Next-gen Flagship",
+        card3Title: "Subscriptions & Trial Tracker",
+        card3Desc: "Development of an intelligent bot for tracking recurring subscriptions and trial periods. Prevents accidental renewals via scheduled smart alerts.",
+        stackTitle: "technology stack",
+        stackDesc: "Tools, libraries, and frameworks I use to engineer and deploy production bots.",
+        stack1Desc: "Deep understanding of OOP, decorators, generators, typing, and asynchronous programming (AsyncIO) for responsive systems.",
+        stack1Badge: "Core Language →",
+        stack2Desc: "Aiogram 3.x framework, interactive inline keyboards, FSM (Finite State Machine) conversational flows, and webhooks.",
+        stack2Badge: "Production →",
+        stack3Desc: "Asynchronous HTTP requests via aiohttp, financial exchange rate APIs, JSON data processing, and smart caching.",
+        stack3Badge: "Integrations →",
+        stack4Desc: "SQLite relational databases, schema design, user state tracking, expiration timeline indexing, and local cache.",
+        stack4Badge: "Storage →",
+        stack5Desc: "Git version control, GitHub workflows, virtual environments (venv), deployment, and 24/7 server monitoring.",
+        stack5Badge: "DevOps →",
+        processTitle: "how I work",
+        processDesc: "A structured, reliable four-step engineering process from concept to deployment.",
+        step1Title: "Idea & User Journey",
+        step1Desc: "Pinpointing real user pain points, mapping conversational trees, and UX design of bot dialogues.",
+        step2Title: "Bot Architecture",
+        step2Desc: "Selecting the optimal tech stack, designing FSM states, data schemas, and third-party API contracts.",
+        step3Title: "Async Python Coding",
+        step3Desc: "Writing clean, modular, typed Python code powered by AsyncIO for instantaneous bot response times.",
+        step4Title: "Testing & Launch",
+        step4Desc: "Stress testing, resilient fallback error handling for APIs, cloud deployment, and continuous uptime.",
+        ctaTitle: "have a project?",
+        ctaDesc: "Message me on Telegram or email — always excited to discuss new bot ideas, automations, and collaborations.",
+        ctaTelegram: "Telegram Message ↗",
+        ctaGithub: "GitHub Profile ↗",
+        ctaEmail: "Copy Email ✉",
+        footerText: "Crafted with dedication to aesthetics, sound, and smooth motion",
+        toastEmail: "Email copied to clipboard!"
+      }
+    };
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      sound.playLangSwitch();
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+
+      if (lang === 'ru') {
+        document.getElementById('btnLangRu').classList.add('active');
+        document.getElementById('btnLangEn').classList.remove('active');
+      } else {
+        document.getElementById('btnLangRu').classList.remove('active');
+        document.getElementById('btnLangEn').classList.add('active');
+      }
+    }
+
+    document.getElementById('btnLangRu').addEventListener('click', () => applyLanguage('ru'));
+    document.getElementById('btnLangEn').addEventListener('click', () => applyLanguage('en'));
+
+    /* ==============================================================
+       5. INTERACTIVE PROJECT MODALS & LIVE SIMULATORS
+       ============================================================== */
+    const modalBackdrop = document.getElementById('projectModal');
+    const modalBadge = document.getElementById('modalBadge');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalContent');
+
+    function openProjectModal(projectId) {
+      sound.playBurst();
+
+      if (projectId === 'grade7') {
+        modalBadge.textContent = currentLang === 'ru' ? '7 класс · Фундамент' : 'Grade 7 · Foundation';
+        modalTitle.textContent = currentLang === 'ru' ? 'Языки программирования & Алгоритмы' : 'Programming Languages & Algorithms';
+
+        modalContent.innerHTML = `
+          <p style="color:#d1d5db; line-height:1.6; margin-bottom:20px;">
+            ${currentLang === 'ru'
+              ? 'В 7 классе началось глубокое погружение в мир программирования. Главный фокус был сделан на понимании фундаментальной логики вычислительных процессов, алгоритмической сложности и сравнении подходов в разных языках (C++, Python, Web).'
+              : 'In Grade 7, my computer science journey began with foundational principles. The main focus was understanding algorithmic logic, time complexity, and contrasting approaches across languages (C++, Python, Web).'}
+          </p>
+
+          <div class="simulator-container">
+            <div class="sim-header">
+              <span>💻 ${currentLang === 'ru' ? 'Интерактивная песочница кода' : 'Interactive Code Playground'}</span>
+              <span class="live-badge">Live Sandbox</span>
+            </div>
+
+            <div class="code-editor-tabs">
+              <button class="code-tab-btn active" onclick="switchCodeTab('py', this)">Python</button>
+              <button class="code-tab-btn" onclick="switchCodeTab('cpp', this)">C++</button>
+              <button class="code-tab-btn" onclick="switchCodeTab('js', this)">JavaScript</button>
+            </div>
+
+            <div class="code-display-box" id="codeEditorBox">def binary_search(arr, target):
+    low, high = 0, len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return f"Найдено на позиции {mid}!"
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return "Не найдено"
+
+# Проверка:
+numbers = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+print(binary_search(numbers, 23))</div>
+
+            <button class="btn-run-code" onclick="runSimulatedCode()">
+              ▶ ${currentLang === 'ru' ? 'Выполнить код' : 'Run Code'}
+            </button>
+            <div id="codeRunOutput" style="margin-top:12px; font-family:monospace; font-size:0.85rem; color:#4ade80;"></div>
+          </div>
+
+          <div style="margin-top:24px;">
+            <h4 style="color:#fff; margin-bottom:10px;">${currentLang === 'ru' ? 'Ключевые достижения 7 класса:' : 'Key Grade 7 Milestones:'}</h4>
+            <ul style="color:#9ca3af; line-height:1.7; padding-left:20px;">
+              <li>${currentLang === 'ru' ? 'Освоение структур данных: динамические массивы, связанные списки, хэш-таблицы (словари).' : 'Mastery of core data structures: dynamic arrays, linked lists, hash tables.'}</li>
+              <li>${currentLang === 'ru' ? 'Алгоритмы сортировки и поиска: QuickSort, MergeSort, бинарный поиск с оценкой O(n log n).' : 'Sorting and search algorithms: QuickSort, MergeSort, binary search with O(n log n) analysis.'}</li>
+              <li>${currentLang === 'ru' ? 'Осознанный выбор Python как главного языка для создания сетевых сервисов и ботов.' : 'Deliberate decision to specialize in Python for network services and bots.'}</li>
+            </ul>
+          </div>
+        `;
+      } else if (projectId === 'grade8') {
+        modalBadge.textContent = currentLang === 'ru' ? '8 класс · Реализованный бот' : 'Grade 8 · Completed Production Bot';
+        modalTitle.textContent = currentLang === 'ru' ? 'Чат-бот «Конвертер валют на Python»' : 'Python Currency Converter Bot';
+
+        modalContent.innerHTML = `
+          <p style="color:#d1d5db; line-height:1.6; margin-bottom:20px;">
+            ${currentLang === 'ru'
+              ? 'Полноценный проект 8 класса — высокоскоростной Telegram-бот для конвертации валют. Бот опрашивает финансовые API в реальном времени, использует асинхронный aiohttp для мгновенного отклика и умное кэширование для снижения нагрузки на внешние шлюзы.'
+              : 'Grade 8 production project — a high-speed Telegram bot for real-time currency conversions. Powered by AsyncIO, aiohttp, live market exchange rate APIs, and intelligent caching.'}
+          </p>
+
+          <div class="simulator-container">
+            <div class="sim-header">
+              <span>🤖 ${currentLang === 'ru' ? 'Симулятор Telegram-бота (попробуйте онлайн)' : 'Live Telegram Bot Simulator'}</span>
+              <span class="live-badge">Exchange API Live</span>
+            </div>
+
+            <div class="currency-sim-row">
+              <input type="number" id="simAmount" class="currency-sim-input" value="100" min="1">
+              <select id="simFrom" class="currency-sim-select">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="CNY">CNY (¥)</option>
+                <option value="BTC">BTC (₿)</option>
+              </select>
+              <span style="color:#8E8E93; font-weight:700;">➔</span>
+              <select id="simTo" class="currency-sim-select">
+                <option value="RUB">RUB (₽)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+              </select>
+              <button class="currency-calc-btn" onclick="calculateSimCurrency()">
+                💱 ${currentLang === 'ru' ? 'Конвертировать' : 'Convert'}
+              </button>
+            </div>
+
+            <div class="currency-sim-output" id="currencySimResult">
+              [Telegram Bot] 💱 100 USD = 9,350.00 RUB<br>
+              <span style="color:#94a3b8; font-size:0.8rem;">Курс ЦБ: 1 USD = 93.50 RUB · Кэш обновлен 2 мин назад</span>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;">
+            <h4 style="color:#fff; margin-bottom:10px;">${currentLang === 'ru' ? 'Архитектурные особенности бота:' : 'Bot Architecture Highlights:'}</h4>
+            <ul style="color:#9ca3af; line-height:1.7; padding-left:20px;">
+              <li>${currentLang === 'ru' ? 'Асинхронные HTTP запросы без блокировки основного потока (aiohttp).' : 'Non-blocking asynchronous HTTP requests using aiohttp.'}</li>
+              <li>${currentLang === 'ru' ? 'In-memory кэширование курсов с TTL 15 минут для оптимизации лимитов внешних API.' : 'In-memory caching with 15-minute TTL to respect API rate limits.'}</li>
+              <li>${currentLang === 'ru' ? 'Интуитивная инлайн-клавиатура с быстрыми пресетами популярных валют.' : 'Intuitive inline keyboards with quick presets for popular pairs.'}</li>
+            </ul>
+          </div>
+        `;
+      } else if (projectId === 'grade9') {
+        modalBadge.textContent = currentLang === 'ru' ? '9 класс · Будущий флагман' : 'Grade 9 · Next-gen Flagship';
+        modalTitle.textContent = currentLang === 'ru' ? 'Чат-бот для контроля подписок и триалов' : 'Subscription & Trial Tracker Bot';
+
+        modalContent.innerHTML = `
+          <p style="color:#d1d5db; line-height:1.6; margin-bottom:20px;">
+            ${currentLang === 'ru'
+              ? 'Флагманский проект 9 класса, призванный решить острую проблему неожиданных списаний денег. Бот отслеживает пробные периоды (триалы) и ежемесячные подписки, отправляя предупреждающие push-уведомления за 24 и 48 часов до платежа.'
+              : 'My flagship Grade 9 project aimed at eliminating unexpected card charges. The bot tracks trial periods and recurring subscriptions, delivering smart push notifications 24 and 48 hours prior to renewal.'}
+          </p>
+
+          <div class="simulator-container">
+            <div class="sim-header">
+              <span>🔔 ${currentLang === 'ru' ? 'Интерактивный дашборд подписок' : 'Interactive Subscriptions Dashboard'}</span>
+              <span class="live-badge">Scheduler Active</span>
+            </div>
+
+            <div id="subsListSim">
+              <div class="sub-item-card">
+                <div class="sub-item-info">
+                  <div class="sub-icon">🎬</div>
+                  <div>
+                    <div class="sub-title">Netflix Premium (4K)</div>
+                    <div style="color:#9ca3af; font-size:0.75rem;">${currentLang === 'ru' ? 'Следующее списание: через 12 дней' : 'Next billing: in 12 days'}</div>
+                  </div>
+                </div>
+                <div class="sub-price">12.99 $</div>
+              </div>
+
+              <div class="sub-item-card">
+                <div class="sub-item-info">
+                  <div class="sub-icon">🎵</div>
+                  <div>
+                    <div class="sub-title">Spotify Duo</div>
+                    <div style="color:#9ca3af; font-size:0.75rem;">${currentLang === 'ru' ? 'Следующее списание: через 5 дней' : 'Next billing: in 5 days'}</div>
+                  </div>
+                </div>
+                <div class="sub-price">169.00 ₽</div>
+              </div>
+
+              <div class="sub-item-card" style="border-color: rgba(244, 63, 94, 0.4);">
+                <div class="sub-item-info">
+                  <div class="sub-icon">🤖</div>
+                  <div>
+                    <div class="sub-title">ChatGPT Plus <span class="sub-trial-badge">ТРИАЛ 48 ЧАСОВ</span></div>
+                    <div style="color:#fb7185; font-size:0.75rem;">⚠️ ${currentLang === 'ru' ? 'Истекает 15 ноября в 18:00' : 'Expires in 48 hours'}</div>
+                  </div>
+                </div>
+                <div class="sub-price">20.00 $</div>
+              </div>
+            </div>
+
+            <div class="sim-alert-banner">
+              <span style="font-size:1.4rem;">⚠️</span>
+              <div>
+                <strong>${currentLang === 'ru' ? 'Тестовое push-уведомление от бота:' : 'Simulated Telegram Bot Push Alert:'}</strong><br>
+                ${currentLang === 'ru'
+                  ? '«Внимание, Zakhar! Через 48 часов заканчивается пробный период ChatGPT Plus. С карты будет списано $20.00 (~1,870 ₽). Отменить подписку сейчас?»'
+                  : '"Alert, Zakhar! ChatGPT Plus trial ends in 48 hours. Your card will be billed $20.00. Cancel trial now?"'}
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;">
+            <h4 style="color:#fff; margin-bottom:10px;">${currentLang === 'ru' ? 'Планы реализации в 9 классе:' : 'Grade 9 Implementation Roadmap:'}</h4>
+            <ul style="color:#9ca3af; line-height:1.7; padding-left:20px;">
+              <li>${currentLang === 'ru' ? 'Фоновый планировщик задач APScheduler для ежечасного сканирования базы на дедлайны.' : 'APScheduler background task runner for hourly trial expiration scans.'}</li>
+              <li>${currentLang === 'ru' ? 'Калькуляция общих ежемесячных расходов на подписки в разных валютах.' : 'Real-time multi-currency monthly expenditure calculation.'}</li>
+              <li>${currentLang === 'ru' ? 'Кнопка быстрой отмены: генерация прямой ссылки на страницу отписки в один клик.' : 'One-click cancellation direct links generator.'}</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      modalBackdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      bindSoundFX();
+    }
+
+    function closeProjectModal() {
+      sound.playClick();
+      modalBackdrop.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target === modalBackdrop) {
+        closeProjectModal();
+      }
+    }
+
+    // Code Sandbox Simulator
+    function switchCodeTab(lang, btn) {
+      sound.playClick();
+      document.querySelectorAll('.code-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const box = document.getElementById('codeEditorBox');
+      const out = document.getElementById('codeRunOutput');
+      out.textContent = '';
+
+      if (lang === 'py') {
+        box.textContent = `def binary_search(arr, target):
+    low, high = 0, len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return f"Элемент {target} найден на индексе {mid}!"
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return "Не найдено"
+
+numbers = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+print(binary_search(numbers, 23))`;
+      } else if (lang === 'cpp') {
+        box.textContent = `#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> nums = {2, 5, 8, 12, 16, 23, 38, 56};
+    int target = 23;
+    std::cout << "C++ Fast Algorithm: Target " << target << " found!" << std::endl;
+    return 0;
+}`;
+      } else if (lang === 'js') {
+        box.textContent = `const binarySearch = (arr, target) => {
+    let low = 0, high = arr.length - 1;
+    while(low <= high) {
+        let mid = Math.floor((low + high) / 2);
+        if (arr[mid] === target) return \`Found at index \${mid}\`;
+        arr[mid] < target ? low = mid + 1 : high = mid - 1;
+    }
+};
+console.log(binarySearch([2, 5, 8, 12, 16, 23, 38], 23));`;
+      }
+    }
+
+    function runSimulatedCode() {
+      sound.playBurst();
+      const out = document.getElementById('codeRunOutput');
+      out.textContent = currentLang === 'ru'
+        ? '>>> Запуск скрипта...\n[OK] Элемент 23 найден на позиции 5! (Время выполнения: 0.003s)'
+        : '>>> Executing code...\n[OK] Element 23 found at index 5! (Execution time: 0.003s)';
+    }
+
+    // Currency Calculator Simulator
+    function calculateSimCurrency() {
+      sound.playBurst();
+      const amount = parseFloat(document.getElementById('simAmount').value) || 1;
+      const from = document.getElementById('simFrom').value;
+      const to = document.getElementById('simTo').value;
+      const res = document.getElementById('currencySimResult');
+
+      const rates = {
+        USD: { RUB: 93.50, EUR: 0.92, USD: 1.0 },
+        EUR: { RUB: 101.40, USD: 1.08, EUR: 1.0 },
+        CNY: { RUB: 12.85, USD: 0.14, EUR: 0.13 },
+        BTC: { RUB: 8450000, USD: 90300, EUR: 83200 }
+      };
+
+      const rate = (rates[from] && rates[from][to]) ? rates[from][to] : 1;
+      const total = (amount * rate).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      res.innerHTML = `
+        <strong>[Telegram Bot]</strong> 💱 <strong>${amount} ${from}</strong> = <span style="color:#38bdf8; font-weight:700;">${total} ${to}</span><br>
+        <span style="color:#94a3b8; font-size:0.8rem;">Актуальный курс: 1 ${from} = ${rate} ${to} · Источник: Exchange Rates API (aiohttp)</span>
+      `;
+    }
+
+    // Email Copy & Toast
+    function copyEmailToClipboard() {
+      sound.playBurst();
+      const email = 'milovanovzahar95@gmail.com';
+      navigator.clipboard.writeText(email).then(() => {
+        const toast = document.getElementById('toastBox');
+        toast.textContent = currentLang === 'ru' ? 'Email скопирован в буфер обмена!' : 'Email copied to clipboard!';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2800);
+      });
+    }
+
+    // Header scroll background blur enhancement
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('siteHeader');
+      if (window.scrollY > 40) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Initial binding
+    bindSoundFX();
+  </script>
+</body>
+</html>
